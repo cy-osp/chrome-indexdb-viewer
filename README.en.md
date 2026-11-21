@@ -26,7 +26,7 @@ A Chrome DevTools extension that adds an **IndexedDB** panel to DevTools, lettin
 
 <sub>Edit: tweak the whole record as JSON and save it straight back to the page's database.</sub>
 
-> `docs/store/` holds the Chrome Web Store assets — five 1280×800 screenshots plus the 128×128 store icon — ready to upload.
+> `docs/store/` holds the Chrome Web Store assets — five 1280×800 screenshots, the 128×128 store icon, and a 440×280 promo tile — ready to upload.
 
 ## Why another IndexedDB viewer
 
@@ -131,7 +131,7 @@ File responsibilities:
 | `panel.js` | Panel logic: injected collect/write/export scripts + table rendering + modal interactions |
 | `test-page.html` | Local fixture page for generating test data |
 | `icons/icon{16,48,128}.png` | Extension icons, also used as the DevTools panel icon |
-| `docs/store/*.png` | Chrome Web Store assets: five 1280×800 screenshots + the 128×128 store icon |
+| `docs/store/*.png` | Chrome Web Store assets: five 1280×800 screenshots + the 128×128 store icon + the 440×280 promo tile |
 | `scripts/pack.sh` | Builds the store upload archive under `dist/` |
 | `PRIVACY.md` | Privacy policy, usable as-is for the store listing |
 | `LICENSE` | MIT license |

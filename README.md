@@ -26,7 +26,7 @@
 
 <sub>编辑：整条记录当 JSON 改，保存即写回页面数据库。</sub>
 
-> `docs/store/` 下是 Chrome Web Store 用的素材：5 张 1280×800 截图 + 128×128 商店图标，可直接上传。
+> `docs/store/` 下是 Chrome Web Store 用的素材：5 张 1280×800 截图 + 128×128 商店图标 + 440×280 小型宣传图块，可直接上传。
 
 ## 为什么又多一个 IndexedDB 查看器
 
@@ -129,7 +129,7 @@ bash scripts/pack.sh
 | `panel.js` | 面板逻辑：注入到页面的收集/写回/导出脚本 + 表格渲染 + 弹窗交互 |
 | `test-page.html` | 本地测试页，造数据用 |
 | `icons/icon{16,48,128}.png` | 扩展图标，同时用作 DevTools 面板图标 |
-| `docs/store/*.png` | Chrome Web Store 素材：5 张 1280×800 截图 + 128×128 商店图标 |
+| `docs/store/*.png` | Chrome Web Store 素材：5 张 1280×800 截图 + 128×128 商店图标 + 440×280 宣传图块 |
 | `scripts/pack.sh` | 打商店上传包，产出 `dist/*.zip` |
 | `PRIVACY.md` | 隐私声明，商店后台填写隐私政策时可直接引用 |
 | `LICENSE` | MIT 许可证 |
