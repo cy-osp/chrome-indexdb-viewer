@@ -52,6 +52,7 @@ Chrome 自带的 Application → IndexedDB 已经能看数据，但：
 | 导出表 | 当前 store 全部记录导出为 JSON |
 | 导出库 | 当前数据库所有 store 一次性导出为 JSON |
 | 源提示 | 顶栏显示 `location.origin`，避免看错上下文 |
+| 中英双语 | 界面文案内置中英两套，默认跟随浏览器语言，顶栏下拉可手动切换并记住选择 |
 
 单次渲染上限 **200 行**（`MAX_ROWS`），超出时提示用搜索缩小范围，避免超大表把面板卡死.
 
@@ -73,6 +74,18 @@ bash scripts/pack.sh
 ```
 
 产出 `dist/chrome-index-db-viewer-<version>.zip`，可直接拖到 Chrome Web Store 开发者后台。包里只有运行时文件加 `LICENSE` / `PRIVACY.md` / 两个 README；`test-page.html`（开发用测试页）、`docs/`（商店素材）、`scripts/` 都不进包。
+
+## 语言 / Language
+
+界面文案内置中英两套（`i18n.js`），无需安装两个扩展：
+
+- **默认跟随浏览器语言**：中文浏览器进中文界面，其他语言进英文界面。
+- **顶栏最右侧有语言下拉**：手动切换后选择记在 `localStorage`，下次打开沿用。
+- 切换只改界面文案，已加载的数据不重新读取。
+
+扩展在浏览器扩展列表里的名字和简介走 `chrome.i18n`，由 `_locales/en`、`_locales/zh_CN` 提供，同样按浏览器语言自动选。
+
+> 面板里表格显示的**数据本身**（库名、表名、字段值）当然按原样显示，不会被翻译。
 
 ## 使用
 
@@ -123,10 +136,12 @@ bash scripts/pack.sh
 
 | 文件 | 作用 |
 |---|---|
-| `manifest.json` | MV3 清单，`devtools_page` 指向 `devtools.html`，权限仅 `clipboardWrite` |
-| `devtools.html` / `devtools.js` | 唯一职责：`chrome.devtools.panels.create('IndexedDB', 'icons/icon16.png', 'panel.html')` |
+| `manifest.json` | MV3 清单，`default_locale: en`，`devtools_page` 指向 `devtools.html`，权限仅 `clipboardWrite` |
+| `devtools.html` / `devtools.js` | 唯一职责：`chrome.devtools.panels.create(<面板标题>, 'icons/icon16.png', 'panel.html')`；标题走 `chrome.i18n` |
 | `panel.html` | 面板 UI 与样式（无框架、无外链 CDN） |
 | `panel.js` | 面板逻辑：注入到页面的收集/写回/导出脚本 + 表格渲染 + 弹窗交互 |
+| `i18n.js` | 面板界面文案的中英两套字典 + 语言判定/切换（`t()` / `setLang()`） |
+| `_locales/{en,zh_CN}/messages.json` | 扩展名称、简介、面板标题的翻译，供 `chrome.i18n` 按浏览器语言取 |
 | `test-page.html` | 本地测试页，造数据用 |
 | `icons/icon{16,48,128}.png` | 扩展图标，同时用作 DevTools 面板图标 |
 | `docs/store/*.png` | Chrome Web Store 素材：5 张 1280×800 截图 + 128×128 商店图标 + 440×280 宣传图块 |

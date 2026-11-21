@@ -12,6 +12,7 @@
   button:hover { background: #eaeef2; }
   .cnt { color: #57606a; margin-left: auto; }
   .cnt + .cnt { margin-left: 0; }
+  #lang { color: #57606a; padding: 4px 6px; }
   .origin { padding: 3px 12px; background: #fff; border-bottom: 1px solid #eaeef2; color: #57606a; font-size: 11px; }
   .origin span { color: #0969da; }
   .body { overflow: auto; position: absolute; top: 63px; bottom: 0; left: 0; right: 0; }
@@ -46,8 +47,9 @@
   <button id="refresh">刷新</button>
   <span class="cnt" id="info" style="display:none"></span>
   <span class="cnt" id="cnt"></span>
+  <select id="lang"></select>
 </div>
-<div class="origin">源：<span id="origin">…</span></div>
+<div class="origin"><span id="origin-label">源：</span><span id="origin">…</span></div>
 <div class="body" id="body"><div class="empty">加载中…</div></div>
 
 <div id="detail"><div class="card">
@@ -62,6 +64,7 @@
   <textarea id="detail-pre" spellcheck="false"></textarea>
 </div></div>
 <div id="toast"></div>
+<script src="i18n.js"></script>
 <script src="panel.js"></script>
 </body>
 </html>

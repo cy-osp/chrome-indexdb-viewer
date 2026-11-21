@@ -1,0 +1,11 @@
+{
+  "extName": {
+    "message": "IndexedDB 调试面板"
+  },
+  "extDescription": {
+    "message": "在 DevTools 中表格化浏览、搜索、编辑并导出 IndexedDB 数据。"
+  },
+  "panelTitle": {
+    "message": "IndexedDB"
+  }
+}

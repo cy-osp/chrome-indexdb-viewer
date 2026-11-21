@@ -15,7 +15,7 @@
 - **剪贴板**只在你点「复制」按钮时写入你正在看的那一段内容。
 - **不存储配置、不上报统计**。扩展没有使用 `chrome.storage`，没有账号体系，没有服务器。
 
-扩展的源码完全公开：<https://gitee.com/cy-open-source-project/chrome-index-db-viewer>。上述承诺可以直接在源码里核对——整个扩展只有 4 个源文件（`manifest.json`、`devtools.js`、`panel.html`、`panel.js`），全部可读。
+扩展的源码完全公开：<https://gitee.com/cy-open-source-project/chrome-index-db-viewer>。上述承诺可以直接在源码里核对——整个扩展只有 5 个源文件（`manifest.json`、`devtools.js`、`panel.html`、`panel.js`、`i18n.js`）外加两份界面文案字典，全部可读。
 
 如果你在商店页面看到本扩展索取与上述不符的权限，请以源码里的 `manifest.json` 为准，并联系我们。
 
@@ -29,7 +29,7 @@ This extension does not collect, transmit, or share any user data.
 - **Clipboard** is written only when you click a "Copy" button, and only with the content you are looking at.
 - **No stored settings, no telemetry.** The extension does not use `chrome.storage`, has no accounts, and has no backend.
 
-Source code: <https://gitee.com/cy-open-source-project/chrome-index-db-viewer>. The extension is four readable files (`manifest.json`, `devtools.js`, `panel.html`, `panel.js`), so every claim above can be verified directly.
+Source code: <https://gitee.com/cy-open-source-project/chrome-index-db-viewer>. The extension is five readable files (`manifest.json`, `devtools.js`, `panel.html`, `panel.js`, `i18n.js`) plus two UI string dictionaries, so every claim above can be verified directly.
 
 ## 联系方式 / Contact
 

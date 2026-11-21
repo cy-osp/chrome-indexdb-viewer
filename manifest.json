@@ -1,13 +1,16 @@
 {
   "manifest_version": 3,
-  "name": "IndexedDB DevTools Panel",
-  "version": "1.0.0",
-  "description": "Browse, search, edit and export IndexedDB data in a DevTools panel. 在 DevTools 中查看、搜索、编辑 IndexedDB 数据",
+  "name": "__MSG_extName__",
+  "version": "1.1.0",
+  "description": "__MSG_extDescription__",
+  "default_locale": "en",
   "devtools_page": "devtools.html",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "permissions": ["clipboardWrite"]
+  "permissions": [
+    "clipboardWrite"
+  ]
 }

@@ -52,6 +52,7 @@ This panel turns those into single clicks: a flat table view, keyword filtering,
 | Export store | Dump every record of the current store as JSON |
 | Export database | Dump every store of the current database as one JSON file |
 | Origin banner | Shows `location.origin` so you never inspect the wrong context |
+| Chinese + English | Two built-in UI languages; follows the browser language by default, with a dropdown in the top bar to switch manually |
 
 Rendering is capped at **200 rows** (`MAX_ROWS`); beyond that the panel asks you to narrow the search instead of freezing on a huge table.
 
@@ -74,12 +75,24 @@ bash scripts/pack.sh
 
 Produces `dist/chrome-index-db-viewer-<version>.zip`, ready to drag into the Chrome Web Store developer dashboard. The archive holds only runtime files plus `LICENSE` / `PRIVACY.md` / both READMEs; `test-page.html` (dev test page), `docs/` (store assets), and `scripts/` are excluded.
 
+## Language
+
+The UI ships with both Chinese and English (`i18n.js`) — no need to install two extensions:
+
+- **Follows the browser language by default**: a Chinese browser gets Chinese, everything else gets English.
+- **Language dropdown at the far right of the top bar**: a manual choice is saved in `localStorage` and reused next time.
+- Switching only re-renders labels; already-loaded data is not fetched again.
+
+The extension's name and description in the browser's extension list come from `chrome.i18n` (`_locales/en`, `_locales/zh_CN`), which Chrome also picks by browser language.
+
+> The **data** shown in the table (database names, store names, field values) is displayed as-is and is never translated.
+
 ## Usage
 
 1. In DevTools, make sure the execution context is the **page's own frame** (not the extension, and not an iframe unless that's where the data lives)
 2. Pick a database, then a store — the table loads automatically
 3. Type in the search box to filter; click a cell to inspect the full value
-4. "编辑" (edit) → modify JSON → "保存" (save) writes back; "导出表 / 导出库" downloads JSON
+4. "Edit" → modify the JSON → "Save" writes it back; "Export store" / "Export DB" download JSON
 
 The UI is currently Chinese-only.
 
@@ -125,10 +138,12 @@ File responsibilities:
 
 | File | Role |
 |---|---|
-| `manifest.json` | MV3 manifest; `devtools_page` points at `devtools.html`; only permission is `clipboardWrite` |
-| `devtools.html` / `devtools.js` | Does one thing: `chrome.devtools.panels.create('IndexedDB', 'icons/icon16.png', 'panel.html')` |
+| `manifest.json` | MV3 manifest with `default_locale: en`; `devtools_page` points at `devtools.html`; only permission is `clipboardWrite` |
+| `devtools.html` / `devtools.js` | Does one thing: `chrome.devtools.panels.create(<title>, 'icons/icon16.png', 'panel.html')`; the title comes from `chrome.i18n` |
 | `panel.html` | Panel UI and styles (no framework, no CDN) |
 | `panel.js` | Panel logic: injected collect/write/export scripts + table rendering + modal interactions |
+| `i18n.js` | Both UI dictionaries (Chinese/English) plus language detection and switching (`t()` / `setLang()`) |
+| `_locales/{en,zh_CN}/messages.json` | Translations of the extension name, description and panel title, read by `chrome.i18n` |
 | `test-page.html` | Local fixture page for generating test data |
 | `icons/icon{16,48,128}.png` | Extension icons, also used as the DevTools panel icon |
 | `docs/store/*.png` | Chrome Web Store assets: five 1280×800 screenshots + the 128×128 store icon + the 440×280 promo tile |

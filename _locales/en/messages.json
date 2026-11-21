@@ -1,0 +1,11 @@
+{
+  "extName": {
+    "message": "IndexedDB DevTools Panel"
+  },
+  "extDescription": {
+    "message": "Browse, search, edit and export IndexedDB data in a DevTools panel."
+  },
+  "panelTitle": {
+    "message": "IndexedDB"
+  }
+}

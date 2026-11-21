@@ -1,6 +1,8 @@
 /* DevTools 面板逻辑
  * 关键点：chrome.devtools.inspectedWindow.eval() 不会 await Promise（它只返回同步可序列化的值），
  * 所以异步收集数据必须"发起 → 挂到页面全局变量 → 轮询取值"三步走。
+ *
+ * 所有面向用户的文案都走 i18n.js 的 t()，默认跟随浏览器语言，顶部下拉可手动切换并记住。
  */
 
 const $ = (id) => document.getElementById(id);
@@ -8,6 +10,7 @@ const MAX_ROWS = 200; // 面板内单次最多渲染行数，避免超大表卡�
 
 let records = [];
 let DB_LIST = [];
+let dbCount = -1;         // 最近一次读到的数据库数量，供切换语言时重刷顶栏计数
 let curDb = '';
 let curStore = '';
 let lastSlice = [];      // 当前渲染出来的行（用于行级操作）
@@ -37,7 +40,7 @@ const evalAsync = async (promiseExpr, timeout = 8000) => {
     return 'started';
   })()`;
   const started = await evalSync(kick);
-  if (started && started.__err) return { err: '注入失败: ' + started.__err };
+  if (started && started.__err) return { err: t('errInjection', { err: started.__err }) };
 
   const deadline = Date.now() + timeout;
   while (Date.now() < deadline) {
@@ -45,23 +48,27 @@ const evalAsync = async (promiseExpr, timeout = 8000) => {
     const raw = await evalSync(`(function(){
       var s = window['${slot}'];
       if (!s) return JSON.stringify({ missing: true });
-      try { return JSON.stringify(s); } catch (e) { return JSON.stringify({ done: true, err: '结果无法序列化: ' + e }); }
+      try { return JSON.stringify(s); } catch (e) { return JSON.stringify({ unserializable: String(e) }); }
     })()`);
     if (!raw || raw.__err) continue;
     let box;
     try { box = JSON.parse(raw); } catch { continue; }
-    if (box.missing) return { err: '页面上下文丢失（页面可能已刷新或跳转）' };
+    if (box.missing) return { err: t('errContextLost') };
+    if (box.unserializable) return { err: t('errSerializable', { err: box.unserializable }) };
     if (!box.done) continue;
     evalSync(`try{delete window['${slot}']}catch(e){}`);
     return box.err ? { err: box.err } : { data: box.data };
   }
   evalSync(`try{delete window['${slot}']}catch(e){}`);
-  return { err: '超时：页面没有响应（可能被 CSP 或长任务阻塞）' };
+  return { err: t('errTimeout') };
 };
 
 /* ---------------- 页面内执行的收集代码 ---------------- */
+// 深层嵌套占位串随语言变化，用 JSON.stringify 安全内联
+const DEEP = JSON.stringify(t('deepNested'));
+
 const P_COLLECT_DBS = `(async function(){
-  if (!indexedDB.databases) return { err: '当前上下文不支持 indexedDB.databases()' };
+  if (!indexedDB.databases) return { err: 'indexedDB.databases() is not available in this context' };
   var dbs = await indexedDB.databases();
   var out = [];
   for (var i = 0; i < dbs.length; i++) {
@@ -88,7 +95,7 @@ const pCollectRecords = (dbName, storeName) => `(async function(){
     }
     if (typeof v === 'function') return '[Function]';
     if (typeof v === 'object') {
-      if (depth > 4) return '[深层嵌套]';
+      if (depth > 4) return ${DEEP};
       if (Array.isArray(v)) return v.slice(0, 200).map(function(x){ return norm(x, depth + 1); });
       var o = {}; var ks = Object.keys(v);
       for (var i = 0; i < ks.length; i++) o[ks[i]] = norm(v[ks[i]], depth + 1);
@@ -160,7 +167,7 @@ const pExportDb = (dbName, stores) => `(async function(){
     }
     if (typeof v === 'function') return '[Function]';
     if (typeof v === 'object') {
-      if (depth > 4) return '[深层嵌套]';
+      if (depth > 4) return ${DEEP};
       if (Array.isArray(v)) return v.slice(0, 200).map(function(x){ return norm(x, depth + 1); });
       var o = {}; var ks = Object.keys(v);
       for (var i = 0; i < ks.length; i++) o[ks[i]] = norm(v[ks[i]], depth + 1);
@@ -194,18 +201,18 @@ const toast = (msg) => {
   el.__t = setTimeout(() => el.classList.remove('show'), 1600);
 };
 
-const copyText = async (t) => {
+const copyText = async (t_) => {
   try {
-    await navigator.clipboard.writeText(t);
-    toast('已复制到剪贴板');
+    await navigator.clipboard.writeText(t_);
+    toast(t('copied'));
   } catch {
     const ta = document.createElement('textarea');
-    ta.value = t;
+    ta.value = t_;
     document.body.appendChild(ta);
     ta.select();
     const ok = document.execCommand('copy');
     ta.remove();
-    toast(ok ? '已复制到剪贴板' : '复制失败');
+    toast(ok ? t('copied') : t('copyFailed'));
   }
 };
 
@@ -216,54 +223,65 @@ const download = (name, text) => {
   a.download = name;
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-  toast('已导出 ' + name);
+  toast(t('exported', { name }));
 };
 
 const safeName = (s) => String(s).replace(/[^\w.-]+/g, '_').slice(0, 60) || 'data';
 
 /* ---------------- UI：加载 ---------------- */
+// 读不到数据时要把上一份记录也丢掉，否则切语言/切目标页后 render() 会画出过期数据
+const clearRecords = () => {
+  records = [];
+  lastSlice = [];
+  curDb = '';
+  curStore = '';
+  curKeyPath = null;
+  $('cnt').textContent = '';
+};
+
 const loadDbs = async () => {
-  $('body').innerHTML = '<div class="empty">读取中…</div>';
+  $('body').innerHTML = `<div class="empty">${esc(t('reading'))}</div>`;
   showInfo('');
   const [origin, res] = await Promise.all([
     evalSync('location.origin'),
     evalAsync(P_COLLECT_DBS),
   ]);
-  const originText = typeof origin === 'string' ? origin : '(未知)';
+  const originText = typeof origin === 'string' ? origin : t('unknown');
   $('origin').textContent = originText;
 
   if (res.err) {
-    $('db').innerHTML = '<option>（读取失败）</option>';
+    DB_LIST = []; dbCount = 0;
+    clearRecords();
+    $('db').innerHTML = `<option>${esc(t('readFailedOption'))}</option>`;
     $('store').innerHTML = '<option>—</option>';
-    $('body').innerHTML = `<div class="empty">读取失败：${esc(res.err)}<br><br>
-      请确认：DevTools 顶部选中的是页面本身的 frame；页面已加载完成；没有被 CSP 阻止。</div>`;
+    $('body').innerHTML = `<div class="empty">${esc(t('readFailed', { err: res.err }))}<br><br>${esc(t('readFailedHint'))}</div>`;
     return;
   }
 
   const dbs = Array.isArray(res.data) ? res.data : [];
   DB_LIST = dbs;
-  showInfo(`共 ${dbs.length} 个数据库`);
+  dbCount = dbs.length;
+  showInfo(t('dbCount', { n: dbs.length }));
 
   if (!dbs.length) {
-    $('db').innerHTML = '<option>（无数据库）</option>';
+    clearRecords();
+    $('db').innerHTML = `<option>${esc(t('noDbOption'))}</option>`;
     $('store').innerHTML = '<option>—</option>';
-    $('body').innerHTML = `<div class="empty">${esc(originText)} 这个源下没有 IndexedDB 数据库。<br><br>
-      常见原因：<br>
-      1. 该网站把数据存在 localStorage / Cookie / Cache Storage 里，没用 IndexedDB<br>
-      2. 数据在 iframe 中，需要在 Console 左上角的执行上下文下拉切换到对应 iframe<br>
-      3. 属于扩展自身（chrome-extension://），本面板访问不到<br>
-      4. 页面还没初始化数据库（先操作一下页面再点"刷新"）</div>`;
+    $('body').innerHTML = `<div class="empty">${esc(t('noDbMsg', { origin: originText }))}<br><br>
+      ${esc(t('noDbReasonsTitle'))}<br>
+      ${t('noDbReasons').map((r, i) => `${i + 1}. ${esc(r)}`).join('<br>\n      ')}</div>`;
     return;
   }
-  $('db').innerHTML = dbs.map((d) => `<option value="${esc(d.name)}">${esc(d.name)}（v${d.version}）</option>`).join('');
+  $('db').innerHTML = dbs.map((d) => `<option value="${esc(d.name)}">${esc(t('dbOption', { name: d.name, version: d.version }))}</option>`).join('');
   loadStores(dbs[0]);
 };
 
 let curKeyPath = null;
 const loadStores = (dbInfo) => {
   if (!dbInfo.stores.length) {
-    $('store').innerHTML = '<option>（无 store）</option>';
-    $('body').innerHTML = '<div class="empty">该数据库没有 object store</div>';
+    clearRecords();
+    $('store').innerHTML = `<option>${esc(t('noStoreOption'))}</option>`;
+    $('body').innerHTML = `<div class="empty">${esc(t('noStoreMsg'))}</div>`;
     return;
   }
   $('store').innerHTML = dbInfo.stores.map((n) => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
@@ -274,10 +292,11 @@ const loadRecords = async (dbName, storeName) => {
   curDb = dbName;
   curStore = storeName;
   curKeyPath = null;
-  $('body').innerHTML = '<div class="empty">加载 ' + esc(storeName) + ' …</div>';
+  $('body').innerHTML = `<div class="empty">${esc(t('loadingStore', { name: storeName }))}</div>`;
   const res = await evalAsync(pCollectRecords(dbName, storeName), 15000);
   if (res.err) {
-    $('body').innerHTML = `<div class="empty">读取 store 失败：${esc(res.err)}</div>`;
+    clearRecords();
+    $('body').innerHTML = `<div class="empty">${esc(t('loadStoreFailed', { err: res.err }))}</div>`;
     return;
   }
   records = (res.data && res.data.rows) || [];
@@ -297,7 +316,7 @@ const fieldsOf = (r) => {
 const toText = (val) => {
   if (val && typeof val === 'object' && val.__t) return String(val.v);
   if (val === null || val === undefined) return '';
-  if (typeof val === 'object') { try { return JSON.stringify(val); } catch { return '[对象]'; } }
+  if (typeof val === 'object') { try { return JSON.stringify(val); } catch { return t('objectPlaceholder'); } }
   return String(val);
 };
 
@@ -311,27 +330,27 @@ const render = () => {
   const slice = list.slice(0, MAX_ROWS);
   lastSlice = slice;
   $('cnt').textContent = list.length === records.length
-    ? `${records.length} 条`
-    : `${list.length} / ${records.length} 条`;
+    ? t('rowsAll', { n: records.length })
+    : t('rowsFiltered', { shown: list.length, total: records.length });
 
   const body = $('body');
-  if (!slice.length) { body.innerHTML = '<div class="empty">没有匹配数据</div>'; return; }
+  if (!slice.length) { body.innerHTML = `<div class="empty">${esc(t('noMatch'))}</div>`; return; }
 
   const fieldSet = [];
   slice.slice(0, 50).forEach((r) => Object.keys(fieldsOf(r)).forEach((f) => { if (!fieldSet.includes(f)) fieldSet.push(f); }));
   const fields = fieldSet.slice(0, 15);
 
-  body.innerHTML = `<table><thead><tr><th>操作</th>${fields.map((f) => `<th>${esc(f)}</th>`).join('')}</tr></thead><tbody>${
+  body.innerHTML = `<table><thead><tr><th>${esc(t('colActions'))}</th>${fields.map((f) => `<th>${esc(f)}</th>`).join('')}</tr></thead><tbody>${
     slice.map((r, idx) => {
       const f = fieldsOf(r);
-      return `<tr><td class="act"><a data-op="copy" data-idx="${idx}">复制</a><a data-op="edit" data-idx="${idx}">编辑</a><a data-op="export" data-idx="${idx}">导出</a></td>${
+      return `<tr><td class="act"><a data-op="copy" data-idx="${idx}">${esc(t('actCopy'))}</a><a data-op="edit" data-idx="${idx}">${esc(t('actEdit'))}</a><a data-op="export" data-idx="${idx}">${esc(t('actExport'))}</a></td>${
         fields.map((fd) => {
-          const t = toText(f[fd]);
-          return `<td class="cell ${fd === '__key__' ? 'key' : ''}" title="${esc(t.slice(0, 300))}" data-full="${esc(t)}">${esc(t)}</td>`;
+          const tx = toText(f[fd]);
+          return `<td class="cell ${fd === '__key__' ? 'key' : ''}" title="${esc(tx.slice(0, 300))}" data-full="${esc(tx)}">${esc(tx)}</td>`;
         }).join('')
       }</tr>`;
     }).join('')
-  }</tbody></table>${list.length > MAX_ROWS ? `<div class="empty">仅显示前 ${MAX_ROWS} 条（共 ${list.length} 条），用搜索框缩小范围</div>` : ''}`;
+  }</tbody></table>${list.length > MAX_ROWS ? `<div class="empty">${esc(t('truncated', { max: MAX_ROWS, total: list.length }))}</div>` : ''}`;
 };
 
 /* 行级操作 / 单元格查看 —— 事件委托 */
@@ -345,7 +364,7 @@ $('body').addEventListener('click', (e) => {
     if (a.dataset.op === 'copy') return copyText(json);
     if (a.dataset.op === 'export') return download(`${safeName(curStore)}_${safeName(keyText)}.json`, json);
     // 标题走 textContent，不能再 esc()，否则 key 里的 & < > 会被二次转义
-    if (a.dataset.op === 'edit') return openDetail(r.value, `编辑 · ${curStore} · key=${keyText}`, { key: r.key }, true);
+    if (a.dataset.op === 'edit') return openDetail(r.value, t('editTitle', { store: curStore, key: keyText }), { key: r.key }, true);
     return;
   }
   const td = e.target.closest('td.cell');
@@ -353,7 +372,7 @@ $('body').addEventListener('click', (e) => {
     const raw = td.dataset.full;
     let pretty = raw;
     try { pretty = JSON.stringify(JSON.parse(raw), null, 2); } catch { }
-    openDetailText(pretty, '完整值（只读）');
+    openDetailText(pretty, t('detailReadonly'));
   }
 });
 
@@ -384,16 +403,16 @@ $('detail-save').addEventListener('click', async () => {
   if (!detailCtx) return;
   const text = $('detail-pre').value;
   try { JSON.parse(text); } catch (e) {
-    toast('不是合法的 JSON：' + e.message);
+    toast(t('invalidJson', { err: e.message }));
     return;
   }
   $('detail-save').disabled = true;
-  $('detail-save').textContent = '保存中…';
+  $('detail-save').textContent = t('saving');
   const res = await evalAsync(pPutRecord(curDb, curStore, curKeyPath, detailCtx.key, text), 10000);
   $('detail-save').disabled = false;
-  $('detail-save').textContent = '保存';
-  if (res.err) { toast('保存失败：' + res.err); return; }
-  toast('已写回 IndexedDB');
+  $('detail-save').textContent = t('save');
+  if (res.err) { toast(t('savingFailed', { err: res.err })); return; }
+  toast(t('savedBack'));
   $('detail').style.display = 'none';
   loadRecords(curDb, curStore);
 });
@@ -403,17 +422,17 @@ $('detail').addEventListener('click', (e) => { if (e.target.id === 'detail') $('
 
 /* ---------------- 库 / 表级导出 ---------------- */
 $('export-store').addEventListener('click', async () => {
-  if (!records.length) { toast('当前表没有数据'); return; }
+  if (!records.length) { toast(t('noRecordsToExport')); return; }
   const out = { database: curDb, store: curStore, exportedAt: new Date().toISOString(), count: records.length, records };
   download(`${safeName(curDb)}_${safeName(curStore)}.json`, JSON.stringify(out, null, 2));
 });
 
 $('export-db').addEventListener('click', async () => {
   const dbInfo = DB_LIST.find((d) => d.name === curDb);
-  if (!dbInfo || !dbInfo.stores.length) { toast('没有可导出的表'); return; }
-  toast('正在导出整个库…');
+  if (!dbInfo || !dbInfo.stores.length) { toast(t('noStoresToExport')); return; }
+  toast(t('exportingDb'));
   const res = await evalAsync(pExportDb(dbInfo.name, dbInfo.stores), 30000);
-  if (res.err) { toast('导出失败：' + res.err); return; }
+  if (res.err) { toast(t('exportFailed', { err: res.err })); return; }
   download(`${safeName(dbInfo.name)}.json`, JSON.stringify(res.data, null, 2));
 });
 
@@ -424,6 +443,49 @@ const showInfo = (msg) => {
   el.style.display = msg ? 'inline' : 'none';
 };
 
+/* ---------------- 语言切换 ---------------- */
+// 把 HTML 里写死的中文/英文文案换成当前语言；工具栏静态标签与弹窗按钮都在这儿
+const applyLang = () => {
+  const ro = document.documentElement;
+  ro.lang = LANG === 'zh' ? 'zh-CN' : 'en';
+
+  $('q').placeholder = t('searchPlaceholder');
+  $('export-store').textContent = t('exportStore');
+  $('export-store').title = t('exportStoreTitle');
+  $('export-db').textContent = t('exportDb');
+  $('export-db').title = t('exportDbTitle');
+  $('refresh').textContent = t('refresh');
+  $('origin-label').textContent = t('originLabel');
+  $('detail-title').textContent = t('detailTitle');
+  $('detail-copy').textContent = t('copy');
+  $('detail-save').textContent = t('save');
+  $('detail-close').textContent = t('close');
+
+  const sel = $('lang');
+  sel.title = t('langTitle');
+  sel.innerHTML = '<option value="zh">中文</option><option value="en">English</option>';
+  sel.value = LANG;
+
+  // 已读到的数据库数量也要用新语言重写
+  if (dbCount >= 0) showInfo(t('dbCount', { n: dbCount }));
+
+  // 数据库下拉里的「（v1）」跟着语言变；正被选中的值保持不变
+  if (DB_LIST.length) {
+    const keep = $('db').value;
+    $('db').innerHTML = DB_LIST.map((d) => `<option value="${esc(d.name)}">${esc(t('dbOption', { name: d.name, version: d.version }))}</option>`).join('');
+    $('db').value = keep;
+  }
+};
+
+// 语言变了：静态文案换掉，表格按新语言重渲染（有数据时不需要重新读取）
+$('lang').addEventListener('change', (e) => {
+  setLang(e.target.value);
+  applyLang();
+  if (records.length) render();
+  else if (DB_LIST.length && curStore) loadRecords(curDb, curStore); // 空表/空态提示也要换语言
+  else loadDbs();
+});
+
 $('db').addEventListener('change', (e) => {
   const d = DB_LIST.find((x) => x.name === e.target.value);
   if (d) loadStores(d);
@@ -432,4 +494,6 @@ $('store').addEventListener('change', (e) => loadRecords(curDb, e.target.value))
 $('refresh').addEventListener('click', loadDbs);
 $('q').addEventListener('input', render);
 
+applyLang();
+$('body').innerHTML = `<div class="empty">${esc(t('loading'))}</div>`;
 loadDbs();
