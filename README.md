@@ -2,7 +2,17 @@
 
 一个 Chrome DevTools 扩展：在 DevTools 里新增一个 **IndexedDB** 标签页，用表格的方式浏览、搜索、编辑、导出被检查页面的 IndexedDB 数据。
 
-![manifest v3](https://img.shields.io/badge/manifest-v3-blue) ![chrome](https://img.shields.io/badge/Chrome-DevTools-4285f4) ![license](https://img.shields.io/badge/license-unlicensed-lightgrey)
+![manifest v3](https://img.shields.io/badge/manifest-v3-blue) ![chrome](https://img.shields.io/badge/Chrome-DevTools-4285f4) ![license](https://img.shields.io/badge/license-MIT-green)
+
+## 截图
+
+![表视图](docs/images/panel-table.jpg)
+
+<sub>表视图：顶部选库/选表、关键字搜索、行级复制/编辑/导出。</sub>
+
+![单元格详情](docs/images/panel-detail.jpg)
+
+<sub>点任意单元格弹出完整 JSON，可复制。</sub>
 
 ## 为什么又多一个 IndexedDB 查看器
 
@@ -37,6 +47,8 @@ Chrome 自带的 Application → IndexedDB 已经能看数据，但：
 2. 右上角打开「开发者模式」
 3. 点「加载已解压的扩展程序」，选择本仓库根目录
 4. 打开任意网页 → F12 → 顶部标签栏会出现 **IndexedDB**（在 Console / Sources 一带，放不下时被收进 `»` 里）
+
+> 需要 Chrome 111+（`indexedDB.databases()` 与 MV3 DevTools 面板）。已在 Chrome 157 上实测通过。
 
 无需构建：源码即产物，改完文件在扩展页点一下刷新（⟳）再重开 DevTools 即可。
 
@@ -94,6 +106,9 @@ Chrome 自带的 Application → IndexedDB 已经能看数据，但：
 | `panel.html` | 面板 UI 与样式（无框架、无外链 CDN） |
 | `panel.js` | 面板逻辑：注入到页面的收集/写回/导出脚本 + 表格渲染 + 弹窗交互 |
 | `test-page.html` | 本地测试页，造数据用 |
+| `icons/icon{16,48,128}.png` | 扩展图标，同时用作 DevTools 面板图标 |
+| `docs/images/*.jpg` | README 截图 |
+| `LICENSE` | MIT 许可证 |
 
 ## 已知限制
 
@@ -114,4 +129,4 @@ Chrome 自带的 Application → IndexedDB 已经能看数据，但：
 
 ## 许可证
 
-仓库暂未指定开源许可证。
+[MIT](LICENSE) © cy-open-source-project

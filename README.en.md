@@ -2,7 +2,17 @@
 
 A Chrome DevTools extension that adds an **IndexedDB** panel to DevTools, letting you browse, search, edit, and export the inspected page's IndexedDB data as a table.
 
-![manifest v3](https://img.shields.io/badge/manifest-v3-blue) ![chrome](https://img.shields.io/badge/Chrome-DevTools-4285f4) ![license](https://img.shields.io/badge/license-unlicensed-lightgrey)
+![manifest v3](https://img.shields.io/badge/manifest-v3-blue) ![chrome](https://img.shields.io/badge/Chrome-DevTools-4285f4) ![license](https://img.shields.io/badge/license-MIT-green)
+
+## Screenshots
+
+![Table view](docs/images/panel-table.jpg)
+
+<sub>Table view: database/store pickers, keyword search, per-row copy/edit/export.</sub>
+
+![Cell detail](docs/images/panel-detail.jpg)
+
+<sub>Clicking any cell opens the full JSON, ready to copy.</sub>
 
 ## Why another IndexedDB viewer
 
@@ -37,6 +47,8 @@ Rendering is capped at **200 rows** (`MAX_ROWS`); beyond that the panel asks you
 2. Enable "Developer mode" (top right)
 3. Click "Load unpacked" and pick this repository root
 4. Open any page → F12 → an **IndexedDB** tab appears in the DevTools tab bar (next to Console / Sources; it may be tucked under `»`)
+
+> Requires Chrome 111+ (`indexedDB.databases()` plus MV3 DevTools panels). Verified on Chrome 157.
 
 No build step: source is the artifact. After editing, hit ⟳ on the extension card and reopen DevTools.
 
@@ -96,6 +108,9 @@ File responsibilities:
 | `panel.html` | Panel UI and styles (no framework, no CDN) |
 | `panel.js` | Panel logic: injected collect/write/export scripts + table rendering + modal interactions |
 | `test-page.html` | Local fixture page for generating test data |
+| `icons/icon{16,48,128}.png` | Extension icons, also used as the DevTools panel icon |
+| `docs/images/*.jpg` | README screenshots |
+| `LICENSE` | MIT license |
 
 ## Known limitations
 
@@ -116,4 +131,4 @@ Code style: no build, no dependencies, plain ES2020 + native DOM. After touching
 
 ## License
 
-No license has been specified for this repository yet.
+[MIT](LICENSE) © cy-open-source-project

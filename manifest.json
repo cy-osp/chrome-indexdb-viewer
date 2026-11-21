@@ -1,8 +1,13 @@
 {
   "manifest_version": 3,
   "name": "IndexedDB DevTools Panel",
-  "version": "1.0",
-  "description": "在 DevTools 中增加一个 IndexedDB 标签页，可视化查看被检查页面的 IndexedDB 数据",
+  "version": "1.0.0",
+  "description": "Browse, search, edit and export IndexedDB data in a DevTools panel. 在 DevTools 中查看、搜索、编辑 IndexedDB 数据",
   "devtools_page": "devtools.html",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
   "permissions": ["clipboardWrite"]
 }
