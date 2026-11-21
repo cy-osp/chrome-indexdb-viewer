@@ -6,13 +6,27 @@
 
 ## 截图
 
-![表视图](docs/images/panel-table.jpg)
+![总览](docs/store/01-overview.png)
+
+<sub>在 DevTools 里新增一个 IndexedDB 标签页，表格化浏览被检查页面的数据。</sub>
+
+![表视图](docs/store/02-table.png)
 
 <sub>表视图：顶部选库/选表、关键字搜索、行级复制/编辑/导出。</sub>
 
-![单元格详情](docs/images/panel-detail.jpg)
+![搜索](docs/store/03-search.png)
+
+<sub>搜索：全部字段模糊匹配，右上角显示命中数 / 总数。</sub>
+
+![单元格详情](docs/store/04-detail.png)
 
 <sub>点任意单元格弹出完整 JSON，可复制。</sub>
+
+![编辑](docs/store/05-edit.png)
+
+<sub>编辑：整条记录当 JSON 改，保存即写回页面数据库。</sub>
+
+> `docs/store/` 下是 Chrome Web Store 用的素材：5 张 1280×800 截图 + 128×128 商店图标，可直接上传。
 
 ## 为什么又多一个 IndexedDB 查看器
 
@@ -102,12 +116,13 @@ Chrome 自带的 Application → IndexedDB 已经能看数据，但：
 | 文件 | 作用 |
 |---|---|
 | `manifest.json` | MV3 清单，`devtools_page` 指向 `devtools.html`，权限仅 `clipboardWrite` |
-| `devtools.html` / `devtools.js` | 唯一职责：`chrome.devtools.panels.create('IndexedDB', '', 'panel.html')` |
+| `devtools.html` / `devtools.js` | 唯一职责：`chrome.devtools.panels.create('IndexedDB', 'icons/icon16.png', 'panel.html')` |
 | `panel.html` | 面板 UI 与样式（无框架、无外链 CDN） |
 | `panel.js` | 面板逻辑：注入到页面的收集/写回/导出脚本 + 表格渲染 + 弹窗交互 |
 | `test-page.html` | 本地测试页，造数据用 |
 | `icons/icon{16,48,128}.png` | 扩展图标，同时用作 DevTools 面板图标 |
-| `docs/images/*.jpg` | README 截图 |
+| `docs/store/*.png` | Chrome Web Store 素材：5 张 1280×800 截图 + 128×128 商店图标 |
+| `PRIVACY.md` | 隐私声明，商店后台填写隐私政策时可直接引用 |
 | `LICENSE` | MIT 许可证 |
 
 ## 已知限制
@@ -126,6 +141,10 @@ Chrome 自带的 Application → IndexedDB 已经能看数据，但：
 4. 新建 Pull Request
 
 代码风格：无构建、无依赖，纯 ES2020 + 原生 DOM；改动 `panel.js` 后请用 `node --check panel.js` 过一遍语法。
+
+## 隐私
+
+不收集、不上传任何数据，扩展里没有任何网络请求，权限只要了 `clipboardWrite`。完整说明见 [PRIVACY.md](PRIVACY.md)。
 
 ## 许可证
 

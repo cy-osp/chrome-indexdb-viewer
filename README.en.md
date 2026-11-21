@@ -6,13 +6,27 @@ A Chrome DevTools extension that adds an **IndexedDB** panel to DevTools, lettin
 
 ## Screenshots
 
-![Table view](docs/images/panel-table.jpg)
+![Overview](docs/store/01-overview.png)
+
+<sub>A new IndexedDB tab inside DevTools, showing the inspected page's data as a table.</sub>
+
+![Table view](docs/store/02-table.png)
 
 <sub>Table view: database/store pickers, keyword search, per-row copy/edit/export.</sub>
 
-![Cell detail](docs/images/panel-detail.jpg)
+![Search](docs/store/03-search.png)
+
+<sub>Search: fuzzy match across all fields, with the hit/total count in the top-right.</sub>
+
+![Cell detail](docs/store/04-detail.png)
 
 <sub>Clicking any cell opens the full JSON, ready to copy.</sub>
+
+![Edit](docs/store/05-edit.png)
+
+<sub>Edit: tweak the whole record as JSON and save it straight back to the page's database.</sub>
+
+> `docs/store/` holds the Chrome Web Store assets — five 1280×800 screenshots plus the 128×128 store icon — ready to upload.
 
 ## Why another IndexedDB viewer
 
@@ -104,12 +118,13 @@ File responsibilities:
 | File | Role |
 |---|---|
 | `manifest.json` | MV3 manifest; `devtools_page` points at `devtools.html`; only permission is `clipboardWrite` |
-| `devtools.html` / `devtools.js` | Does one thing: `chrome.devtools.panels.create('IndexedDB', '', 'panel.html')` |
+| `devtools.html` / `devtools.js` | Does one thing: `chrome.devtools.panels.create('IndexedDB', 'icons/icon16.png', 'panel.html')` |
 | `panel.html` | Panel UI and styles (no framework, no CDN) |
 | `panel.js` | Panel logic: injected collect/write/export scripts + table rendering + modal interactions |
 | `test-page.html` | Local fixture page for generating test data |
 | `icons/icon{16,48,128}.png` | Extension icons, also used as the DevTools panel icon |
-| `docs/images/*.jpg` | README screenshots |
+| `docs/store/*.png` | Chrome Web Store assets: five 1280×800 screenshots + the 128×128 store icon |
+| `PRIVACY.md` | Privacy policy, usable as-is for the store listing |
 | `LICENSE` | MIT license |
 
 ## Known limitations
@@ -128,6 +143,10 @@ File responsibilities:
 4. Open a Pull Request
 
 Code style: no build, no dependencies, plain ES2020 + native DOM. After touching `panel.js`, run `node --check panel.js`.
+
+## Privacy
+
+No data is collected or transmitted; there is no network request anywhere in the extension and the only permission is `clipboardWrite`. See [PRIVACY.md](PRIVACY.md).
 
 ## License
 
