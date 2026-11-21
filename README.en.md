@@ -27,7 +27,7 @@ A Chrome DevTools extension that adds an **IndexedDB** panel to DevTools, lettin
 <sub>Edit: tweak the whole record as JSON and save it straight back to the page's database.</sub>
 
 > `docs/store/` holds the Chrome Web Store assets — five 1280×800 screenshots, the 128×128 store icon, and a 440×280 promo tile — ready to upload.
-> Store copy (name, descriptions, permission justification, privacy answers) is in [`docs/store/listing-en.md`](docs/store/listing-en.md).
+> Store copy (name, descriptions, single purpose, permission justification, privacy answers) is in [`docs/store/listing-en.md`](docs/store/listing-en.md), with a Chinese version in [`docs/store/listing-zh.md`](docs/store/listing-zh.md).
 >
 > Both the UI chrome and the sample data in these images are in English, which is what the international storefront shows. The extension itself still ships in Chinese and English.
 

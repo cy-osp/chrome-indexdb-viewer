@@ -58,19 +58,38 @@ PRIVACY
 The extension does not collect, transmit, or share any data. There is no network request anywhere in the code — no fetch, no XHR, no WebSocket, no analytics. The only permission requested is clipboardWrite, used when you click a Copy button. It never reads browsing history, never touches your tabs, and only reads the IndexedDB of the page you are inspecting, after you open the panel yourself. Everything stays on your machine.
 ```
 
-## Permission justification
-
-For `clipboardWrite`:
-
-```
-Used only when the user clicks a "Copy" button, to copy the inspected record's JSON to the clipboard. The extension does not read from the clipboard and requests no other permission.
-```
-
 ## Single purpose statement
 
+The store dashboard gives this a 1,000-character textarea. This is 764 characters.
+
 ```
-Browse, search, edit and export IndexedDB data of the inspected page from a Chrome DevTools panel.
+This extension adds one panel to Chrome DevTools. In that panel it displays the IndexedDB databases and object stores of the page currently open in the inspected tab as a flat table, and lets the developer search that table, open a single record as JSON, copy it, edit it and write it back, or export the current object store or the whole database to a JSON file.
+
+It only reads and writes IndexedDB of the inspected page. It has no other function: it does not modify page content, does not inject anything into pages, does not run in the background and does not collect, transmit or sell any data. There is no network request anywhere in the code.
+
+All functionality is reached from that single DevTools panel, and removing the panel removes the entire extension.
 ```
+
+## Permission justification — `clipboardWrite`
+
+Same 1,000-character textarea. This is 919 characters.
+
+```
+clipboardWrite is used for exactly one thing: the Copy buttons.
+
+The panel renders each record as JSON. When the developer clicks Copy — on a row, in the cell-detail dialog, or in the edit dialog — the extension writes that JSON text to the system clipboard so it can be pasted into an editor, a bug report or a chat. Nothing else in the extension touches the clipboard.
+
+The extension never reads the clipboard: it does not request clipboardRead and has no paste feature.
+
+If the Clipboard API call is rejected, the code falls back to document.execCommand('copy') on a temporary hidden textarea — the same user-initiated copy through an older API. Either way the write happens only in direct response to a click, never on load, in the background, or on a timer.
+
+This is the only permission the extension requests. There are no host permissions, no content scripts, no background service worker, and no network access.
+```
+
+Both of these mirror what the code actually does. The two clipboard call sites are
+`navigator.clipboard.writeText()` in `copyText()` and the `document.execCommand('copy')`
+fallback immediately below it in `panel.js` — nothing else in the extension touches
+the clipboard, and `manifest.json` requests no other permission.
 
 ## Privacy practices (Data usage tab)
 

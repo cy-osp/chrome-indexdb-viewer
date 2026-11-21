@@ -27,7 +27,7 @@
 <sub>编辑：整条记录当 JSON 改，保存即写回页面数据库。</sub>
 
 > `docs/store/` 下是 Chrome Web Store 用的素材：5 张 1280×800 截图 + 128×128 商店图标 + 440×280 小型宣传图块，可直接上传。
-> 商店文案（名称、简介、权限说明、隐私问答）见 [`docs/store/listing-en.md`](docs/store/listing-en.md)。
+> 商店文案（名称、简介、单一用途、权限说明、隐私问答）见 [`docs/store/listing-zh.md`](docs/store/listing-zh.md)（中文）与 [`docs/store/listing-en.md`](docs/store/listing-en.md)（英文）。
 >
 > 截图与宣传图块里的界面文案和示例数据都是英文（面向国际商店，避免评审看中文），扩展本身仍支持中英双语。
 
