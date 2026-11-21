@@ -66,6 +66,14 @@ Chrome 自带的 Application → IndexedDB 已经能看数据，但：
 
 无需构建：源码即产物，改完文件在扩展页点一下刷新（⟳）再重开 DevTools 即可。
 
+### 打包上传商店
+
+```bash
+bash scripts/pack.sh
+```
+
+产出 `dist/chrome-index-db-viewer-<version>.zip`，可直接拖到 Chrome Web Store 开发者后台。包里只有运行时文件加 `LICENSE` / `PRIVACY.md` / 两个 README；`test-page.html`（开发用测试页）、`docs/`（商店素材）、`scripts/` 都不进包。
+
 ## 使用
 
 1. 在 DevTools 里把执行上下文切到**页面本身的 frame**（不是扩展、不是 iframe，除非数据就在 iframe 里）
@@ -122,6 +130,7 @@ Chrome 自带的 Application → IndexedDB 已经能看数据，但：
 | `test-page.html` | 本地测试页，造数据用 |
 | `icons/icon{16,48,128}.png` | 扩展图标，同时用作 DevTools 面板图标 |
 | `docs/store/*.png` | Chrome Web Store 素材：5 张 1280×800 截图 + 128×128 商店图标 |
+| `scripts/pack.sh` | 打商店上传包，产出 `dist/*.zip` |
 | `PRIVACY.md` | 隐私声明，商店后台填写隐私政策时可直接引用 |
 | `LICENSE` | MIT 许可证 |
 

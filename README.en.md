@@ -66,6 +66,14 @@ Rendering is capped at **200 rows** (`MAX_ROWS`); beyond that the panel asks you
 
 No build step: source is the artifact. After editing, hit ⟳ on the extension card and reopen DevTools.
 
+### Packaging for the store
+
+```bash
+bash scripts/pack.sh
+```
+
+Produces `dist/chrome-index-db-viewer-<version>.zip`, ready to drag into the Chrome Web Store developer dashboard. The archive holds only runtime files plus `LICENSE` / `PRIVACY.md` / both READMEs; `test-page.html` (dev test page), `docs/` (store assets), and `scripts/` are excluded.
+
 ## Usage
 
 1. In DevTools, make sure the execution context is the **page's own frame** (not the extension, and not an iframe unless that's where the data lives)
@@ -124,6 +132,7 @@ File responsibilities:
 | `test-page.html` | Local fixture page for generating test data |
 | `icons/icon{16,48,128}.png` | Extension icons, also used as the DevTools panel icon |
 | `docs/store/*.png` | Chrome Web Store assets: five 1280×800 screenshots + the 128×128 store icon |
+| `scripts/pack.sh` | Builds the store upload archive under `dist/` |
 | `PRIVACY.md` | Privacy policy, usable as-is for the store listing |
 | `LICENSE` | MIT license |
 
