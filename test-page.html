@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>IndexedDB Panel 测试页</title>
+<style>
+  body{font:14px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:720px;margin:48px auto;padding:0 20px;color:#1f2328;background:#fff}
+  h1{font-size:20px;margin-bottom:4px}
+  .sub{color:#57606a;font-size:13px;margin-bottom:24px}
+  button{padding:7px 14px;border:1px solid #d0d7de;border-radius:6px;background:#f6f8fa;cursor:pointer;font-size:13px;margin-right:8px}
+  button:hover{background:#eaeef2}
+  pre{background:#f6f8fa;border:1px solid #d0d7de;border-radius:8px;padding:12px;font-size:12px;overflow:auto}
+  ol{color:#57606a;font-size:13px}
+</style>
+</head>
+<body>
+<h1>IndexedDB Panel 测试页</h1>
+<div class="sub">这个页面会创建 1 个数据库、2 个 object store、共 320 条记录，用来验证 DevTools 面板能否正常读取。</div>
+
+<button id="build">创建测试数据</button>
+<button id="drop">清空数据库</button>
+
+<h3 style="font-size:14px;margin-top:28px">验证步骤</h3>
+<ol>
+  <li>先点上面的「创建测试数据」</li>
+  <li>按 F12 打开 DevTools，切到 <b>IndexedDB</b> 标签页</li>
+  <li>下拉应出现 <code>shop-demo</code>，store 可选 <code>products</code> / <code>orders</code></li>
+  <li>表格里应能看到数据，搜索框输入 "iphone" 可过滤，点单元格能看完整 JSON</li>
+</ol>
+
+<pre id="log">等待操作…</pre>
+
+<script>
+const logEl = document.getElementById('log');
+const log = (msg) => { logEl.textContent = msg; };
+
+function openDb() {
+  return new Promise((res, rej) => {
+    const req = indexedDB.open('shop-demo', 1);
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains('products')) {
+        const s = db.createObjectStore('products', { keyPath: 'id' });
+        s.createIndex('by_category', 'category');
+      }
+      if (!db.objectStoreNames.contains('orders')) {
+        db.createObjectStore('orders', { keyPath: 'orderNo' });
+      }
+    };
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+
+document.getElementById('build').addEventListener('click', async () => {
+  try {
+    const db = await openDb();
+    const cats = ['手机', '耳机', '配件', '电脑'];
+    const tx = db.transaction(['products', 'orders'], 'readwrite');
+    const p = tx.objectStore('products');
+    for (let i = 1; i <= 300; i++) {
+      p.put({
+        id: 'p' + i,
+        name: (i % 7 === 0 ? 'iPhone 15 Pro ' : '商品 ') + i,
+        category: cats[i % 4],
+        price: (Math.random() * 5000).toFixed(2) * 1,
+        stock: Math.floor(Math.random() * 100),
+        tags: ['新品', '热销'].slice(0, i % 3),
+        spec: { color: ['黑', '白', '蓝'][i % 3], weight: 100 + i % 50 },
+        createdAt: new Date(Date.now() - i * 3600_000),
+        thumb: new Blob(['x'.repeat(128)], { type: 'image/png' })
+      });
+    }
+    const o = tx.objectStore('orders');
+    for (let i = 1; i <= 20; i++) {
+      o.put({
+        orderNo: 'SO' + String(100000 + i),
+        amount: (Math.random() * 3000).toFixed(2) * 1,
+        paid: i % 2 === 0,
+        buyer: { name: '用户' + i, email: 'u' + i + '@example.com' },
+        items: [{ id: 'p' + (i % 300 + 1), qty: i % 5 + 1 }],
+        createdAt: new Date()
+      });
+    }
+    tx.oncomplete = () => { log('已创建：shop-demo / products(300 条) + orders(20 条)'); db.close(); };
+    tx.onerror = () => { log('写入失败：' + tx.error); db.close(); };
+  } catch (e) {
+    log('创建失败：' + e);
+  }
+});
+
+document.getElementById('drop').addEventListener('click', () => {
+  const req = indexedDB.deleteDatabase('shop-demo');
+  req.onsuccess = () => log('已删除 shop-demo，可点「创建测试数据」重建');
+  req.onblocked = () => log('删除被阻塞：请先关闭其他地方打开的连接（或刷新页面）');
+});
+</script>
+</body>
+</html>

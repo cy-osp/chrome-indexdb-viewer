@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 12px/1.5 -apple-system, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif; color: #1f2328; }
+  .bar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #f6f8fa; border-bottom: 1px solid #d0d7de; flex-wrap: wrap; }
+  select, input, button { padding: 4px 8px; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; color: #1f2328; }
+  input { width: 180px; }
+  button { cursor: pointer; }
+  button:hover { background: #eaeef2; }
+  .cnt { color: #57606a; margin-left: auto; }
+  .cnt + .cnt { margin-left: 0; }
+  .origin { padding: 3px 12px; background: #fff; border-bottom: 1px solid #eaeef2; color: #57606a; font-size: 11px; }
+  .origin span { color: #0969da; }
+  .body { overflow: auto; position: absolute; top: 63px; bottom: 0; left: 0; right: 0; }
+  table { border-collapse: collapse; width: 100%; }
+  th { position: sticky; top: 0; background: #f6f8fa; text-align: left; padding: 5px 10px; border-bottom: 1px solid #d0d7de; white-space: nowrap; color: #57606a; z-index: 1; }
+  td { padding: 5px 10px; border-bottom: 1px solid #eaeef2; max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: top; }
+  td.cell { cursor: pointer; }
+  tr:hover td { background: #f6f8fa; }
+  .key { color: #0969da; font-weight: 600; }
+  td.act { white-space: nowrap; max-width: none; }
+  td.act a { color: #0969da; cursor: pointer; text-decoration: none; margin-right: 8px; user-select: none; }
+  td.act a:hover { text-decoration: underline; }
+  .empty { padding: 40px; text-align: center; color: #57606a; }
+  #detail { position: fixed; inset: 0; background: rgba(0,0,0,.4); display: none; align-items: center; justify-content: center; }
+  #detail .card { background: #fff; border-radius: 8px; width: 640px; max-width: 92vw; max-height: 82vh; display: flex; flex-direction: column; }
+  #detail .head { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #f6f8fa; border-bottom: 1px solid #d0d7de; }
+  #detail .head .btns { display: flex; gap: 6px; }
+  #detail textarea { flex: 1; border: none; padding: 12px; resize: none; outline: none;
+    font: 11px/1.6 Menlo, Consolas, monospace; color: #1f2328; background: #fff; min-height: 260px; }
+  #toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); background: #1f2328; color: #fff;
+    padding: 6px 16px; border-radius: 6px; font-size: 12px; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 10; }
+  #toast.show { opacity: .9; }
+</style>
+</head>
+<body>
+<div class="bar">
+  <select id="db"></select>
+  <select id="store"></select>
+  <input id="q" placeholder="搜索全部字段…">
+  <button id="export-store" title="导出当前表全部记录为 JSON">导出表</button>
+  <button id="export-db" title="导出整个数据库（全部表）为 JSON">导出库</button>
+  <button id="refresh">刷新</button>
+  <span class="cnt" id="info" style="display:none"></span>
+  <span class="cnt" id="cnt"></span>
+</div>
+<div class="origin">源：<span id="origin">…</span></div>
+<div class="body" id="body"><div class="empty">加载中…</div></div>
+
+<div id="detail"><div class="card">
+  <div class="head">
+    <span id="detail-title">完整值</span>
+    <span class="btns">
+      <button id="detail-copy">复制</button>
+      <button id="detail-save" style="display:none; color:#1a7f37; font-weight:600">保存</button>
+      <button id="detail-close">关闭</button>
+    </span>
+  </div>
+  <textarea id="detail-pre" spellcheck="false"></textarea>
+</div></div>
+<div id="toast"></div>
+<script src="panel.js"></script>
+</body>
+</html>

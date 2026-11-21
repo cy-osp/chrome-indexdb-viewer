@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs and temp
+*.log
+npm-debug.log*
+node_modules/

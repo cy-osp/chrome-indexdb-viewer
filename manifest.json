@@ -1,0 +1,8 @@
+{
+  "manifest_version": 3,
+  "name": "IndexedDB DevTools Panel",
+  "version": "1.0",
+  "description": "在 DevTools 中增加一个 IndexedDB 标签页，可视化查看被检查页面的 IndexedDB 数据",
+  "devtools_page": "devtools.html",
+  "permissions": ["clipboardWrite"]
+}
