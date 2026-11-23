@@ -44,8 +44,8 @@ Source code: <https://github.com/cy-osp/chrome-indexdb-viewer>. The extension is
 
 | 项目 / Item | 内容 / Value |
 | --- | --- |
-| 联系人 / Contact | caoyw42637 |
-| 邮箱 / Email | <caoyw42637@hundsun.com> |
+| 联系人 / Contact | yidashi33 |
+| 邮箱 / Email | <yidashi33@126.com> |
 | 问题反馈 / Issues | <https://github.com/cy-osp/chrome-indexdb-viewer/issues> |
 | 在线版本 / Online copy | <https://cy-osp.github.io/chrome-indexdb-viewer/privacy.html> |
 
@@ -56,5 +56,6 @@ We answer privacy inquiries within a reasonable period, normally within 30 days.
 
 | 日期 / Date | 版本 / Version | 变更 / Change |
 | --- | --- | --- |
+| 2026-11-23 | 1.1.0 | 网页版（`docs/privacy.html`）改为纯英文，联系方式改为 yidashi33@126.com。 |
 | 2026-11-23 | 1.1.0 | 补充生效日期、联系方式与变更记录；措辞与 1.1.0 的双语界面一致。 |
 | 2026-11-21 | 1.0.0 | 首次发布。 |

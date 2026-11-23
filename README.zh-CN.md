@@ -154,7 +154,7 @@ bash scripts/pack.sh
 | `docs/store/*.png` | Chrome Web Store 素材：5 张 1280×800 截图 + 128×128 商店图标 + 440×280 宣传图块 |
 | `scripts/pack.sh` | 打商店上传包，产出 `dist/*.zip` |
 | `PRIVACY.md` | 隐私声明（Markdown 版，随包分发），商店后台填写隐私政策时可直接引用 |
-| `docs/privacy.html` | 隐私声明的网页版，托管后作为商店后台填写的隐私政策网址 |
+| `docs/privacy.html` | 隐私声明的网页版（纯英文，商店审核面向国际），托管后作为商店后台填写的隐私政策网址 |
 | `docs/index.html` | GitHub Pages 的落地页，指向隐私页与源码 |
 | `LICENSE` | MIT 许可证 |
 
@@ -177,7 +177,7 @@ bash scripts/pack.sh
 
 ## 隐私
 
-不收集、不上传任何数据，扩展里没有任何网络请求，权限只要了 `clipboardWrite`。完整说明见 [PRIVACY.md](PRIVACY.md)，网页版（商店后台填写的隐私政策网址即此）：<https://cy-osp.github.io/chrome-indexdb-viewer/privacy.html>。
+不收集、不上传任何数据，扩展里没有任何网络请求，权限只要了 `clipboardWrite`。完整说明见 [PRIVACY.md](PRIVACY.md)（中英双语）；网页版是纯英文的（商店审核面向国际），也是商店后台要填的那个地址：<https://cy-osp.github.io/chrome-indexdb-viewer/privacy.html>。
 
 ## 许可证
 
