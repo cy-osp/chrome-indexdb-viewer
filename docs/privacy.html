@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — IndexedDB DevTools Panel</title>
+<meta name="description" content="Privacy policy for the IndexedDB DevTools Panel Chrome extension. No data collected, no network access, one permission: clipboardWrite.">
+<meta name="robots" content="index, follow">
+<!-- Self-contained by design: no fonts, no scripts, no images, no CDN.
+     The privacy policy for an extension that makes no network request
+     should not make one either. -->
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1d21;
+    --muted: #5b6570;
+    --rule: #e3e7ec;
+    --accent: #0b6bcb;
+    --code-bg: #f4f6f8;
+    --mark: #fff8c5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d1117;
+      --fg: #e6edf3;
+      --muted: #9aa5b1;
+      --rule: #232a33;
+      --accent: #58a6ff;
+      --code-bg: #161b22;
+      --mark: #3b3310;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    padding: 0 20px 72px;
+    background: var(--bg);
+    color: var(--fg);
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+          "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+  }
+  main { max-width: 720px; margin: 0 auto; }
+  header { padding: 56px 0 24px; border-bottom: 1px solid var(--rule); margin-bottom: 32px; }
+  h1 { font-size: 27px; line-height: 1.25; margin: 0 0 12px; letter-spacing: -0.01em; }
+  h2 { font-size: 20px; margin: 44px 0 14px; letter-spacing: -0.01em; }
+  h3 { font-size: 16px; margin: 28px 0 8px; }
+  p, li { color: var(--fg); }
+  .meta { color: var(--muted); font-size: 14px; margin: 0; }
+  .meta a { color: var(--muted); }
+  .lede {
+    font-size: 17px;
+    padding: 16px 18px;
+    border-left: 3px solid var(--accent);
+    background: var(--code-bg);
+    border-radius: 0 6px 6px 0;
+    margin: 0 0 28px;
+  }
+  ul { padding-left: 22px; }
+  li { margin: 9px 0; }
+  code {
+    font: 13.5px/1.5 ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    background: var(--code-bg);
+    padding: 1.5px 5px;
+    border-radius: 4px;
+  }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:hover { text-decoration-thickness: 2px; }
+  .permission {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 4px 18px 14px;
+    margin: 18px 0 0;
+  }
+  .permission h3 { margin-top: 14px; }
+  .lang-switch { font-size: 14px; color: var(--muted); margin: 0 0 6px; }
+  section[lang="zh-CN"] { display: block; }
+  footer {
+    margin-top: 56px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+    font-size: 14px;
+    color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  @media print {
+    body { padding: 0; }
+    header { padding-top: 0; }
+    a { color: inherit; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <h1>Privacy Policy — IndexedDB DevTools Panel</h1>
+  <p class="meta">
+    <strong>Effective:</strong> 21 November 2026 ·
+    <strong>Last updated:</strong> 23 November 2026 ·
+    <strong>Version:</strong> 1.1.0
+  </p>
+</header>
+
+<p class="lede">
+  This extension does not collect, transmit, or share any user data.
+  It makes no network requests at all, and it requests exactly one permission.
+</p>
+
+<h2 id="en">English</h2>
+
+<h3>What the extension handles</h3>
+<p>
+  The extension adds a panel to Chrome DevTools. When you open that panel yourself,
+  it reads the IndexedDB databases and object stores of <strong>the page currently
+  open in the inspected tab</strong>, and renders them as a table in that panel.
+  Nothing else is read.
+</p>
+<p>
+  Everything happens locally, inside your browser. Browsing, searching, editing a
+  record, writing it back, and exporting to JSON are all local operations. When you
+  export, the browser saves the file to a location you choose; the extension keeps
+  no copy.
+</p>
+
+<h3>What the extension does not do</h3>
+<ul>
+  <li><strong>No network access.</strong> There is no <code>fetch</code>,
+      <code>XMLHttpRequest</code>, WebSocket, beacon, analytics, or crash reporting
+      anywhere in the code. No network-capable permission is requested.</li>
+  <li><strong>No browsing history, no tab access, no injection into arbitrary pages.</strong>
+      There are no content scripts and no host permissions.</li>
+  <li><strong>No stored settings, no telemetry, no accounts, no backend.</strong>
+      The extension does not use <code>chrome.storage</code> or any other persistence
+      beyond a single language preference kept in the DevTools page's own
+      <code>localStorage</code>.</li>
+  <li><strong>No selling or sharing of data.</strong> There is no data to sell or share.</li>
+  <li><strong>No remote code.</strong> All code ships inside the package; nothing is
+      fetched or evaluated at runtime.</li>
+</ul>
+
+<div class="permission">
+  <h3>The one permission: <code>clipboardWrite</code></h3>
+  <p>
+    It is used for exactly one thing — the Copy buttons. When you click Copy on a
+    row, in the cell-detail dialog, or in the edit dialog, the record's JSON is
+    written to your system clipboard so you can paste it elsewhere.
+  </p>
+  <p>
+    The extension never reads the clipboard: <code>clipboardRead</code> is not
+    requested and there is no paste feature. The write happens only in direct
+    response to your click — never on load, in the background, or on a timer.
+  </p>
+</div>
+
+<h3>Children</h3>
+<p>
+  The extension is a developer tool and is not directed at children. It collects no
+  personal information from anyone, of any age.
+</p>
+
+<h3>Changes to this policy</h3>
+<p>
+  If the extension's data handling ever changes, this page will be updated and the
+  "Last updated" date above will change before the new version is published. The
+  full revision history is public in the source repository.
+</p>
+
+<h3>Verifying these claims</h3>
+<p>
+  The source is public, so every statement above can be checked directly. The
+  extension is a handful of readable files — <code>manifest.json</code>,
+  <code>devtools.html</code>, <code>devtools.js</code>, <code>panel.html</code>,
+  <code>panel.js</code>, <code>i18n.js</code> — plus two UI string dictionaries.
+  Grep the repository for <code>fetch</code>, <code>XMLHttpRequest</code>,
+  <code>WebSocket</code>, or <code>chrome.storage</code>: there are no matches.
+  <code>manifest.json</code> contains <code>"permissions": ["clipboardWrite"]</code>
+  and nothing else.
+</p>
+
+<h2 id="zh">中文</h2>
+
+<h3>扩展处理哪些数据</h3>
+<p>
+  本扩展在 Chrome DevTools 中新增一个面板。当你主动打开该面板后，它读取
+  <strong>当前被检查标签页里那个页面</strong>的 IndexedDB 数据库与 object store，
+  以表格形式渲染在这个面板里。除此之外不读取任何东西。
+</p>
+<p>
+  所有操作都在你本机的浏览器内完成：浏览、搜索、编辑某条记录、写回、导出为 JSON，
+  全部是本地行为。导出时由浏览器把文件保存到你选择的位置，扩展不保留副本。
+</p>
+
+<h3>扩展不做什么</h3>
+<ul>
+  <li><strong>不联网。</strong>代码里没有任何 <code>fetch</code>、
+      <code>XMLHttpRequest</code>、WebSocket、beacon、埋点或崩溃上报，
+      也没有申请任何能访问网络的权限。</li>
+  <li><strong>不读浏览记录、不访问标签页、不向任意页面注入。</strong>
+      没有内容脚本，没有主机权限。</li>
+  <li><strong>不存储配置、不上报统计、没有账号体系、没有服务器。</strong>
+      扩展不使用 <code>chrome.storage</code>，也不做其他持久化；唯一的例外是
+      DevTools 页面自身 <code>localStorage</code> 里记的一项语言偏好。</li>
+  <li><strong>不出售、不共享数据。</strong>本来就没有数据可供出售或共享。</li>
+  <li><strong>不使用远程代码。</strong>全部代码随安装包一起分发，运行时不下载、
+      不执行任何远程内容。</li>
+</ul>
+
+<div class="permission">
+  <h3>唯一申请的权限：<code>clipboardWrite</code></h3>
+  <p>
+    它只用于一件事——复制按钮。当你在行内、单元格详情弹窗或编辑弹窗中点击「复制」时，
+    该条记录的 JSON 会被写入系统剪贴板，方便你粘贴到别处。
+  </p>
+  <p>
+    扩展从不读取剪贴板：没有申请 <code>clipboardRead</code>，也没有粘贴功能。
+    写入只由你的点击直接触发，不会在页面加载时、后台或定时器里发生。
+  </p>
+</div>
+
+<h3>关于儿童</h3>
+<p>
+  本扩展是开发者工具，并非面向儿童。它不收集任何人的个人信息，无论年龄。
+</p>
+
+<h3>政策变更</h3>
+<p>
+  如果扩展的数据处理方式将来发生变化，本页面会在新版本发布之前更新，并修改上方的
+  「最后更新」日期。完整修订历史在源码仓库中公开可查。
+</p>
+
+<h3>如何核对这些声明</h3>
+<p>
+  源码是公开的，上面每一条都可以直接验证。整个扩展只有几个可读的源文件——
+  <code>manifest.json</code>、<code>devtools.html</code>、<code>devtools.js</code>、
+  <code>panel.html</code>、<code>panel.js</code>、<code>i18n.js</code>——外加两份界面
+  文案字典。在仓库里搜索 <code>fetch</code>、<code>XMLHttpRequest</code>、
+  <code>WebSocket</code> 或 <code>chrome.storage</code>，不会有任何命中。
+  <code>manifest.json</code> 里只有 <code>"permissions": ["clipboardWrite"]</code>，
+  没有别的。
+</p>
+
+<h2>联系方式 / Contact</h2>
+<p>
+  Questions about this policy, or about how the extension handles data:<br>
+  对本政策或扩展的数据处理方式有疑问：
+</p>
+<ul>
+  <li>Email: <a href="mailto:caoyw42637@hundsun.com">caoyw42637@hundsun.com</a></li>
+  <li>Issues: <a href="https://github.com/cy-osp/chrome-indexdb-viewer/issues" rel="noopener">github.com/cy-osp/chrome-indexdb-viewer/issues</a></li>
+</ul>
+
+<footer>
+  <p>
+    IndexedDB DevTools Panel · Privacy Policy ·
+    Effective 21 November 2026 · Updated 23 November 2026
+  </p>
+  <p>
+    本页面不加载任何外部资源（无字体、无脚本、无图片、无 CDN），
+    一个不联网的扩展，其隐私政策也不应该联网。<br>
+    This page loads no external resources whatsoever — no fonts, scripts, images,
+    or CDN. A privacy policy for an extension that makes no network request should
+    not make one either.
+  </p>
+</footer>
+
+</main>
+</body>
+</html>

@@ -1,7 +1,14 @@
 # 隐私声明 / Privacy Policy
 
-**扩展名称**：IndexedDB DevTools Panel
-**最后更新**：2026-11-21
+| 项目 / Item | 内容 / Value |
+| --- | --- |
+| 扩展名称 / Extension | IndexedDB DevTools Panel |
+| 适用版本 / Applies to | 1.1.0 及以后 / 1.1.0 and later |
+| 生效日期 / Effective date | 2026-11-21 |
+| 最后更新 / Last updated | 2026-11-23 |
+
+**本政策的在线版本 / Online version of this policy**：见下方「联系方式」一节的网址。
+如本文件与在线版本不一致，以本文件为准。
 
 ## 中文
 
@@ -15,7 +22,7 @@
 - **剪贴板**只在你点「复制」按钮时写入你正在看的那一段内容。
 - **不存储配置、不上报统计**。扩展没有使用 `chrome.storage`，没有账号体系，没有服务器。
 
-扩展的源码完全公开：<https://gitee.com/cy-open-source-project/chrome-index-db-viewer>。上述承诺可以直接在源码里核对——整个扩展只有 5 个源文件（`manifest.json`、`devtools.js`、`panel.html`、`panel.js`、`i18n.js`）外加两份界面文案字典，全部可读。
+扩展的源码完全公开：<https://github.com/cy-osp/chrome-indexdb-viewer>。上述承诺可以直接在源码里核对——整个扩展只有 5 个源文件（`manifest.json`、`devtools.js`、`panel.html`、`panel.js`、`i18n.js`）外加两份界面文案字典，全部可读。
 
 如果你在商店页面看到本扩展索取与上述不符的权限，请以源码里的 `manifest.json` 为准，并联系我们。
 
@@ -29,8 +36,25 @@ This extension does not collect, transmit, or share any user data.
 - **Clipboard** is written only when you click a "Copy" button, and only with the content you are looking at.
 - **No stored settings, no telemetry.** The extension does not use `chrome.storage`, has no accounts, and has no backend.
 
-Source code: <https://gitee.com/cy-open-source-project/chrome-index-db-viewer>. The extension is five readable files (`manifest.json`, `devtools.js`, `panel.html`, `panel.js`, `i18n.js`) plus two UI string dictionaries, so every claim above can be verified directly.
+Source code: <https://github.com/cy-osp/chrome-indexdb-viewer>. The extension is five readable files (`manifest.json`, `devtools.js`, `panel.html`, `panel.js`, `i18n.js`) plus two UI string dictionaries, so every claim above can be verified directly.
 
 ## 联系方式 / Contact
 
-Issues: <https://gitee.com/cy-open-source-project/chrome-index-db-viewer/issues>
+数据控制者与隐私事务联系人 / Data controller and privacy contact：
+
+| 项目 / Item | 内容 / Value |
+| --- | --- |
+| 联系人 / Contact | caoyw42637 |
+| 邮箱 / Email | <caoyw42637@hundsun.com> |
+| 问题反馈 / Issues | <https://github.com/cy-osp/chrome-indexdb-viewer/issues> |
+| 在线版本 / Online copy | <https://cy-osp.github.io/chrome-indexdb-viewer/privacy.html> |
+
+我们会在收到隐私相关问询后的合理期限内答复，通常不超过 30 天。
+We answer privacy inquiries within a reasonable period, normally within 30 days.
+
+## 变更记录 / Revision history
+
+| 日期 / Date | 版本 / Version | 变更 / Change |
+| --- | --- | --- |
+| 2026-11-23 | 1.1.0 | 补充生效日期、联系方式与变更记录；措辞与 1.1.0 的双语界面一致。 |
+| 2026-11-21 | 1.0.0 | 首次发布。 |

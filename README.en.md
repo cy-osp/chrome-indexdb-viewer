@@ -151,7 +151,9 @@ File responsibilities:
 | `icons/icon{16,48,128}.png` | Extension icons, also used as the DevTools panel icon |
 | `docs/store/*.png` | Chrome Web Store assets: five 1280×800 screenshots + the 128×128 store icon + the 440×280 promo tile |
 | `scripts/pack.sh` | Builds the store upload archive under `dist/` |
-| `PRIVACY.md` | Privacy policy, usable as-is for the store listing |
+| `PRIVACY.md` | Privacy policy (Markdown, ships in the archive), usable as-is for the store listing |
+| `docs/privacy.html` | Web version of the privacy policy — this is the URL to enter in the store dashboard |
+| `docs/index.html` | GitHub Pages landing page linking the privacy page and the source |
 | `LICENSE` | MIT license |
 
 ## Known limitations
@@ -173,7 +175,7 @@ Code style: no build, no dependencies, plain ES2020 + native DOM. After touching
 
 ## Privacy
 
-No data is collected or transmitted; there is no network request anywhere in the extension and the only permission is `clipboardWrite`. See [PRIVACY.md](PRIVACY.md).
+No data is collected or transmitted; there is no network request anywhere in the extension and the only permission is `clipboardWrite`. See [PRIVACY.md](PRIVACY.md); the web version (the URL to enter in the store dashboard) is <https://cy-osp.github.io/chrome-indexdb-viewer/privacy.html>.
 
 ## License
 

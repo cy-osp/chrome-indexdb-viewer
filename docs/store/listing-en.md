@@ -103,7 +103,7 @@ the clipboard, and `manifest.json` requests no other permission.
 ## Privacy policy URL
 
 ```
-https://gitee.com/cy-open-source-project/chrome-index-db-viewer/blob/master/PRIVACY.md
+https://cy-osp.github.io/chrome-indexdb-viewer/privacy.html
 ```
 
 ---

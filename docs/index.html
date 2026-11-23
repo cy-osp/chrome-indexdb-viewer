@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IndexedDB DevTools Panel</title>
+<meta name="description" content="Chrome DevTools extension that turns IndexedDB into a readable, searchable, editable table.">
+<style>
+  :root { --bg:#fff; --fg:#1a1d21; --muted:#5b6570; --rule:#e3e7ec; --accent:#0b6bcb; --card:#f7f9fb; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6edf3; --muted:#9aa5b1; --rule:#232a33; --accent:#58a6ff; --card:#161b22; } }
+  * { box-sizing:border-box; }
+  body { margin:0; padding:0 20px 64px; background:var(--bg); color:var(--fg);
+         font:16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+              "Noto Sans", Helvetica, Arial, sans-serif; }
+  main { max-width:680px; margin:0 auto; }
+  header { padding:64px 0 28px; }
+  h1 { font-size:30px; line-height:1.2; margin:0 0 10px; letter-spacing:-0.02em; }
+  .tagline { color:var(--muted); font-size:17px; margin:0; }
+  h2 { font-size:19px; margin:40px 0 12px; }
+  ul { padding-left:22px; } li { margin:8px 0; }
+  a { color:var(--accent); text-decoration-thickness:1px; text-underline-offset:2px; }
+  a:hover { text-decoration-thickness:2px; }
+  nav { display:flex; flex-wrap:wrap; gap:12px; margin:32px 0 0; }
+  nav a { display:block; flex:1 1 200px; padding:16px 18px; border:1px solid var(--rule);
+          border-radius:10px; background:var(--card); text-decoration:none; }
+  nav a b { display:block; font-size:16px; margin-bottom:3px; }
+  nav a span { color:var(--muted); font-size:14px; }
+  nav a:hover { border-color:var(--accent); }
+  footer { margin-top:56px; padding-top:20px; border-top:1px solid var(--rule);
+           font-size:14px; color:var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>IndexedDB DevTools Panel</h1>
+    <p class="tagline">Browse, search, edit and export IndexedDB data in a DevTools panel.</p>
+  </header>
+
+  <p>
+    A Chrome extension that adds one panel to DevTools, turning IndexedDB into a
+    readable, searchable table — with in-place editing and JSON export. It makes no
+    network request and requests a single permission.
+  </p>
+
+  <nav>
+    <a href="privacy.html">
+      <b>Privacy policy →</b>
+      <span>The one document Chrome Web Store reviewers need.</span>
+    </a>
+    <a href="https://github.com/cy-osp/chrome-indexdb-viewer">
+      <b>Source code →</b>
+      <span>Every claim verifiable. No build step, no frameworks.</span>
+    </a>
+  </nav>
+
+  <h2>What it does</h2>
+  <ul>
+    <li>Table view with columns inferred from your records; primary key highlighted.</li>
+    <li>Global search across every field name and value in the store.</li>
+    <li>Full cell inspection, and in-place editing written back via <code>objectStore.put()</code>.</li>
+    <li>Export the current store or the whole database to JSON.</li>
+    <li>Chinese and English UI, following the browser language, switchable in the toolbar.</li>
+  </ul>
+
+  <footer>
+    <p>
+      This site is static and self-contained: no fonts, scripts, images, or CDN.
+      It is served from the project's own repository.
+    </p>
+  </footer>
+</main>
+</body>
+</html>

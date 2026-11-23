@@ -91,7 +91,7 @@ clipboardWrite 只用于一件事：复制按钮。
 ## 隐私权政策网址
 
 ```
-https://gitee.com/cy-open-source-project/chrome-index-db-viewer/blob/master/PRIVACY.md
+https://cy-osp.github.io/chrome-indexdb-viewer/privacy.html
 ```
 
 ## 素材清单
