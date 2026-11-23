@@ -30,6 +30,8 @@ A Chrome DevTools extension that adds an **IndexedDB** panel to DevTools, lettin
 > Store copy (name, descriptions, single purpose, permission justification, privacy answers) is in [`docs/store/listing-en.md`](docs/store/listing-en.md), with a Chinese version in [`docs/store/listing-zh.md`](docs/store/listing-zh.md).
 >
 > Both the UI chrome and the sample data in these images are in English, which is what the international storefront shows. The extension itself still ships in Chinese and English.
+>
+> The privacy policy has a web version hosted on GitHub Pages: <https://cy-osp.github.io/chrome-indexdb-viewer/privacy.html> (source: `docs/privacy.html`; Pages serves the `/docs` folder on `master`). That is the URL to enter as the privacy policy in the store dashboard.
 
 ## Why another IndexedDB viewer
 

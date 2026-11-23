@@ -30,6 +30,8 @@
 > 商店文案（名称、简介、单一用途、权限说明、隐私问答）见 [`docs/store/listing-zh.md`](docs/store/listing-zh.md)（中文）与 [`docs/store/listing-en.md`](docs/store/listing-en.md)（英文）。
 >
 > 截图与宣传图块里的界面文案和示例数据都是英文（面向国际商店，避免评审看中文），扩展本身仍支持中英双语。
+>
+> 隐私政策的网页版由 GitHub Pages 托管：<https://cy-osp.github.io/chrome-indexdb-viewer/privacy.html>（源文件 `docs/privacy.html`，Pages 取自 `master` 分支的 `/docs` 目录）。商店后台的「隐私权政策网址」填这个地址。
 
 ## 为什么又多一个 IndexedDB 查看器
 
