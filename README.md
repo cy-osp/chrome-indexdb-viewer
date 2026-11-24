@@ -150,7 +150,7 @@ File responsibilities:
 | `i18n.js` | Both UI dictionaries (Chinese/English) plus language detection and switching (`t()` / `setLang()`) |
 | `_locales/{en,zh_CN}/messages.json` | Translations of the extension name, description and panel title, read by `chrome.i18n` |
 | `test-page.html` | Local fixture page for generating test data |
-| `icons/icon{16,48,128}.png` | Extension icons, also used as the DevTools panel icon |
+| `icons/icon{16,32,48,128}.png` | Extension icons for the toolbar (`action.default_icon`) and the extension page; `icon16` is also the DevTools panel icon |
 | `docs/store/*.png` | Chrome Web Store assets: five 1280×800 screenshots + the 128×128 store icon + the 440×280 promo tile |
 | `scripts/pack.sh` | Builds the store upload archive under `dist/` |
 | `PRIVACY.md` | Privacy policy (Markdown, ships in the archive), usable as-is for the store listing |

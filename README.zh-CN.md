@@ -150,7 +150,7 @@ bash scripts/pack.sh
 | `i18n.js` | 面板界面文案的中英两套字典 + 语言判定/切换（`t()` / `setLang()`） |
 | `_locales/{en,zh_CN}/messages.json` | 扩展名称、简介、面板标题的翻译，供 `chrome.i18n` 按浏览器语言取 |
 | `test-page.html` | 本地测试页，造数据用 |
-| `icons/icon{16,48,128}.png` | 扩展图标，同时用作 DevTools 面板图标 |
+| `icons/icon{16,32,48,128}.png` | 扩展图标，用于工具栏按钮（`action.default_icon`）与扩展页；其中 `icon16` 同时是 DevTools 面板图标 |
 | `docs/store/*.png` | Chrome Web Store 素材：5 张 1280×800 截图 + 128×128 商店图标 + 440×280 宣传图块 |
 | `scripts/pack.sh` | 打商店上传包，产出 `dist/*.zip` |
 | `PRIVACY.md` | 隐私声明（Markdown 版，随包分发），商店后台填写隐私政策时可直接引用 |
