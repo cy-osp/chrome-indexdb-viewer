@@ -1,6 +1,28 @@
 # Chrome Web Store listing — English
 
-Everything below is ready to paste into the Chrome Web Store developer dashboard.
+**This whole file is a reference sheet, not paste material.** Pasting it wholesale is
+what put `# Chrome Web Store listing — English` and `## Name` into the overview field.
+
+Rules:
+
+1. Each `##` section below is a *label*, matching a field in the dashboard.
+2. Only the text inside the ```` ``` ```` fence under a label goes into that field.
+3. The prose outside the fences is commentary for whoever is filling the form — never paste it.
+4. Delete whatever the dashboard pre-filled before pasting. It pre-fills the overview from
+   the manifest description, which is Chinese when the dashboard is in Chinese.
+
+---
+
+| Dashboard field | Section in this file |
+| --- | --- |
+| Name | Name |
+| Short description | Short description |
+| Category | Category |
+| Overview / Detailed description | Overview (detailed description) |
+| Single purpose | Single purpose statement |
+| Permission justification (clipboardWrite) | Permission justification |
+| Privacy practices → Data usage | Privacy practices (Data usage tab) |
+| Privacy policy URL | Privacy policy URL |
 
 ---
 
@@ -28,35 +50,38 @@ so the store copy and the manifest stay in sync.
 Developer Tools
 ```
 
-## Detailed description
+## Overview (detailed description)
+
+Plain text. The dashboard does not render Markdown — no `#` headings, no `|` tables,
+no `**bold**`, no links. Blank lines plus capitalised section names do the formatting.
 
 ```
-A DevTools panel that turns IndexedDB into a readable, searchable table — and lets you edit and export it without leaving the browser.
+Turn IndexedDB into a readable, searchable table, right inside Chrome DevTools.
 
-Chrome's built-in Application → IndexedDB view shows your data, but you can only drill down one level at a time: no global search, no way to see all fields at once, no copy-to-JSON, and editing a record means clicking through it field by field. This panel replaces all of that with a single table view.
+Chrome's built-in Application > IndexedDB view only lets you drill down one level at a time: no global search, no way to see all fields at once, no copy to JSON, and editing a record means clicking through it field by field. This panel replaces all of that with one table.
 
-WHAT IT DOES
+FEATURES
 
-• Table view — columns are inferred automatically from your records (sampled from the first 50, up to 15 columns), with the primary key highlighted.
-• Global search — type a keyword and it matches both field names and field values, case-insensitively, across every record in the store.
-• Full cell inspection — click any cell to see the complete, pretty-printed JSON instead of an ellipsized preview.
-• Edit and write back — open a record, change the JSON, hit Save, and it is written straight back with objectStore.put(). Byte-for-byte round-trips for dates and nested objects; Blob and ArrayBuffer fields are shown as summaries because binary data can't cross the DevTools boundary.
-• Row actions — copy a row as JSON, edit it, or export just that row.
-• Export store or database — dump the current object store, or every store in the database, to a single .json file.
-• Origin banner — a constant reminder of which origin's data you are looking at, so you never edit the wrong context.
-• Chinese + English — the interface ships in both languages, follows your browser language by default, and can be switched from a dropdown in the toolbar.
+- Table view: columns inferred from your records automatically, primary key highlighted.
+- Global search: one keyword matches both field names and field values, case-insensitively.
+- Cell inspection: click any cell for the complete, pretty-printed JSON.
+- Edit and write back: change the JSON, click Save, and it is written straight back.
+- Export: copy, edit, or export a single row, the current store, or the whole database.
+- English and Chinese: follows your browser language, switchable from the toolbar.
 
-DETAILS WORTH KNOWING
+GOOD TO KNOW
 
-• Renders at most 200 rows at a time; beyond that it asks you to narrow the search rather than freezing on a huge table.
-• Dates are displayed as ISO strings and revived as real Date objects on write-back. Blobs and binary buffers can't be serialized across the DevTools boundary, so they appear as placeholders — export a backup before editing records that contain them.
-• Requires Chrome 111 or newer.
-• No build step, no framework, no CDN: the extension is a handful of readable source files.
+- Renders up to 200 rows at a time; beyond that it asks you to narrow the search.
+- Dates round-trip as real Date objects. Blobs and binary buffers cannot cross the DevTools boundary and appear as placeholders, so export a backup first.
+- Requires Chrome 111 or newer.
 
 PRIVACY
 
-The extension does not collect, transmit, or share any data. There is no network request anywhere in the code — no fetch, no XHR, no WebSocket, no analytics. The only permission requested is clipboardWrite, used when you click a Copy button. It never reads browsing history, never touches your tabs, and only reads the IndexedDB of the page you are inspecting, after you open the panel yourself. Everything stays on your machine.
+No data is collected, transmitted, or shared. There is no network request anywhere in the code. The only permission is clipboardWrite, used when you click a Copy button. Only the IndexedDB of the inspected page is read, and only after you open the panel.
 ```
+
+1423 characters. **Paste this over the whole field** — do not append to whatever
+was already in the textarea.
 
 ## Single purpose statement
 
