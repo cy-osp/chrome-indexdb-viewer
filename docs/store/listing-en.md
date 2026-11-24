@@ -144,6 +144,6 @@ https://cy-osp.github.io/chrome-indexdb-viewer/privacy.html
 | Screenshot 4 | `docs/store/04-detail.png` | 1280×800, no alpha |
 | Screenshot 5 | `docs/store/05-edit.png` | 1280×800, no alpha |
 | Small promo tile | `docs/store/promo-440x280.png` | 440×280, 24-bit PNG, no alpha |
-| Upload package | `dist/chrome-index-db-viewer-1.1.0.zip` | built by `scripts/pack.sh` |
+| Upload package | `dist/chrome-index-db-viewer-1.1.1.zip` | built by `scripts/pack.sh` |
 
 All screenshots use the English UI and English sample data.

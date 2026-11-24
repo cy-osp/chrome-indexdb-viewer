@@ -3,9 +3,9 @@
 | 项目 / Item | 内容 / Value |
 | --- | --- |
 | 扩展名称 / Extension | IndexedDB DevTools Panel |
-| 适用版本 / Applies to | 1.1.0 及以后 / 1.1.0 and later |
+| 适用版本 / Applies to | 1.1.1 及以后 / 1.1.1 and later |
 | 生效日期 / Effective date | 2026-11-21 |
-| 最后更新 / Last updated | 2026-11-23 |
+| 最后更新 / Last updated | 2026-11-24 |
 
 **本政策的在线版本 / Online version of this policy**：见下方「联系方式」一节的网址。
 如本文件与在线版本不一致，以本文件为准。
@@ -56,6 +56,7 @@ We answer privacy inquiries within a reasonable period, normally within 30 days.
 
 | 日期 / Date | 版本 / Version | 变更 / Change |
 | --- | --- | --- |
+| 2026-11-24 | 1.1.1 | 修复工具栏按钮显示为灰白占位图标的问题，补 32px 图标并重绘图标；数据处理方式未变，本政策内容除版本号与日期外无改动。 |
 | 2026-11-23 | 1.1.0 | 网页版（`docs/privacy.html`）改为纯英文，联系方式改为 yidashi33@126.com。 |
 | 2026-11-23 | 1.1.0 | 补充生效日期、联系方式与变更记录；措辞与 1.1.0 的双语界面一致。 |
 | 2026-11-21 | 1.0.0 | 首次发布。 |

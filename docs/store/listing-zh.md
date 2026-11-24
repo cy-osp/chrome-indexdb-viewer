@@ -128,7 +128,7 @@ https://cy-osp.github.io/chrome-indexdb-viewer/privacy.html
 | 截图 4 | `docs/store/04-detail.png` | 1280×800，无 alpha |
 | 截图 5 | `docs/store/05-edit.png` | 1280×800，无 alpha |
 | 小型宣传图块 | `docs/store/promo-440x280.png` | 440×280，24 位 PNG，无 alpha |
-| 上传包 | `dist/chrome-index-db-viewer-1.1.0.zip` | 由 `scripts/pack.sh` 生成 |
+| 上传包 | `dist/chrome-index-db-viewer-1.1.1.zip` | 由 `scripts/pack.sh` 生成 |
 
 注意：截图与宣传图块里的界面文案和示例数据都是英文，是为国际版商店准备的。
 如果这份中文商品信息要搭配中文截图，需要用 `/tmp/store.js`（旧的中文版采集脚本）重出一套。
